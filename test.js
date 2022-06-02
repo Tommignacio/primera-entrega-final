@@ -1,0 +1,1 @@
+console.log(`${__dirname}/dataBase/products.txt`)
