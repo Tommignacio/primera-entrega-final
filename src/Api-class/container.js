@@ -25,6 +25,7 @@ export default class Container {
 	//lee el archivo
 	async read() {
 		try {
+			//verifica que el archivo exista
 			await this.createFile()
 			let file = await fs.promises.readFile(this.pathBD, "utf-8");
 			//si el archivo esta vacío
@@ -50,6 +51,36 @@ export default class Container {
 			console.log(error);
 		}
 	}
+
+	//crear ID
+	generateId(obj) {
+		try {
+			//guarda todos los id
+			const findId = obj.map((item) => item.id);
+			let newId;
+			if (findId.length == 0) {
+				newId = 1;
+			}
+			//busca el maximo iD que existe entre todo el array y le suma uno
+			else {
+				newId = Math.max.apply(null, findId) + 1;
+			}
+			return newId;
+		} catch (error) {
+			return error;
+		}
+	}
+
+	//hora
+	getNow() {
+		try {
+			const now = new Date();
+			return `${now.getHours()}:${now.getMinutes()}`;
+		} catch (error) {
+			console.log(error)
+		}
+	};
+
 
 	//agrega y guarda un nuevo objeto
 	// async save(obj) {
@@ -134,15 +165,15 @@ export default class Container {
 	// }
 
 	//devuelve tosdos los objetos
-	async getAll() {
-		try {
-			let all = await this.read();
+	// async getAll() {
+	// 	try {
+	// 		let all = await this.read();
 
-			return all;
-		} catch (error) {
-			return error;
-		}
-	}
+	// 		return all;
+	// 	} catch (error) {
+	// 		return error;
+	// 	}
+	// }
 
 
 	// async getAll() {
@@ -158,24 +189,7 @@ export default class Container {
 
 
 
-	//crear ID
-	generateId(obj) {
-		try {
-			//guarda todos los id
-			const findId = obj.map((item) => item.id);
-			let newId;
-			if (findId.length == 0) {
-				newId = 1;
-			}
-			//busca el maximo iD que existe entre todo el array y le suma uno
-			else {
-				newId = Math.max.apply(null, findId) + 1;
-			}
-			return newId;
-		} catch (error) {
-			return error;
-		}
-	}
+
 
 	//actualizar
 	// async update(obj) {

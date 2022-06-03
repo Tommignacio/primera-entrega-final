@@ -1,3 +1,4 @@
+// import getNow from "../../public/main";
 import container from "./container"
 
 
@@ -13,13 +14,13 @@ class Products extends container {
             //lee el archivo
             let res = await this.read();
             //busca repetidos
-            console.log(res.length);
             // if (res.length >= 1) {
             //     for (let el of res) {
             //         console.log(el["title"], obj["title"]);
             //         if (el["title"] === obj["title"]) throw "error, producto repetido";
             //     }
             // }
+            //crea nueva id
             const id = this.generateId(res);
             console.log(id)
             const product = {

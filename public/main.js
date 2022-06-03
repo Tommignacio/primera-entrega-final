@@ -52,3 +52,4 @@ const getNow = () => {
     const now = new Date();
     return `${now.getHours()}:${now.getMinutes()}`;
 };
+

@@ -1,4 +1,4 @@
-const { Router } = require("express");
+import { Router } from 'express'
 const router = Router();
 // const { default: productNew } = require("../../Api-class/products");
 import product from "../../Api-class/products";
@@ -73,14 +73,14 @@ router.post("/", async (req, res) => {
 });
 
 //devuelve todos los productos
-router.get("/list", async (req, res) => {
-	try {
-		let allProducts = await products.getAll();
-		return res.render("list", { allProducts });
-	} catch (error) {
-		console.log(error);
-	}
-});
+// router.get("/list", async (req, res) => {
+// 	try {
+// 		let allProducts = await products.getAll();
+// 		return res.render("list", { allProducts });
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// });
 
 //devuelve producto por ID
 // router.get("/:id", existProduct, noProductError, async (req, res) => {
