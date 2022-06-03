@@ -25,6 +25,7 @@ export default class Container {
 	//lee el archivo
 	async read() {
 		try {
+			await this.createFile()
 			let file = await fs.promises.readFile(this.pathBD, "utf-8");
 			//si el archivo esta vacío
 			if (file === "") {
@@ -136,6 +137,7 @@ export default class Container {
 	async getAll() {
 		try {
 			let all = await this.read();
+
 			return all;
 		} catch (error) {
 			return error;
@@ -157,10 +159,10 @@ export default class Container {
 
 
 	//crear ID
-	generateId() {
+	generateId(obj) {
 		try {
 			//guarda todos los id
-			const findId = this.data.map((item) => item.id);
+			const findId = obj.map((item) => item.id);
 			let newId;
 			if (findId.length == 0) {
 				newId = 1;
@@ -176,29 +178,32 @@ export default class Container {
 	}
 
 	//actualizar
-	async update(obj) {
-		try {
-			let products = this.data;
-			products.splice(obj.id - 1, 1, obj);
-			return obj;
-		} catch (error) {
-			return error;
-		}
-	}
+	// async update(obj) {
+	// 	try {
+	// 		let products = await this.read();
+	// 		products.splice(obj.id - 1, 1, obj);
+	// 		products = JSON.stringify(products)
+	// 		await this.write(products)
+	// 		return obj;
+	// 	} catch (error) {
+	// 		return error;
+	// 	}
+	// }
 
-	//elimina objeto por su id
-	async deleteById(id) {
-		try {
-			let products = this.data;
-			//busca el indice del id del producto
-			const idProduct = products.findIndex((prod) => prod.id === id);
-			//elimina ese producto
-			products.splice(idProduct, 1);
-			return products;
-		} catch (error) {
-			console.log(error);
-		}
-	}
+	// //elimina objeto por su id
+	// async deleteById(id) {
+	// 	try {
+	// 		let products = await this.read();
+	// 		//busca el indice del id del producto
+	// 		const idProduct = products.findIndex((prod) => prod.id === id);
+	// 		//elimina ese producto
+	// 		products.splice(idProduct, 1);
+
+	// 		return products;
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// }
 }
 //instancio la clase
 // const products = new Container();

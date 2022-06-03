@@ -18,9 +18,9 @@ router.use(multer({ storage }).single("thumbnail")); // 'thumbnail' es el nombre
 
 //middlewares
 const existProduct = async function (req, res, next) {
-	//controla si eciste el producto por su id
-	const allProducts = await products.getAll();
-	for (el of allProducts) {
+	//controla si existe el producto por su id
+	const allProducts = await product.getAll();
+	for (const el of allProducts) {
 		if (el.id === Number(req.params.id)) {
 			return next();
 		}
@@ -43,9 +43,13 @@ const noProductError = async function (err, req, res, next) {
 router.get("/:id?", async (req, res) => {
 	try {
 		const { id } = req.params
-		let allProducts = await product.getAll();
-		let idProduct = await product.idProduct(id)
-		return res.render("index", { allProducts });
+		if (id === undefined) {
+			let allProducts = await product.getAll();
+			return res.json({ allProducts });
+		}
+		let idProduct = await product.getById(id)
+		return res.json({ idProduct });
+		// return res.render("index", { allProducts });
 	} catch (error) {
 		console.log(error);
 	}
@@ -55,13 +59,14 @@ router.get("/:id?", async (req, res) => {
 //agrega producto
 router.post("/", async (req, res) => {
 	try {
-		const { title, price } = req.body;
-		const image = req.file;
-		const obj = { title, price, thumbnail: `../../files/${image.filename}` };
-		const id = await products.save(obj);
-		// console.log(id.id)
+		const productNew = req.body;
+		// const image = req.file;
+		// const obj = { title, price, thumbnail: `../../files/${image.filename}` };
+		const addProduct = await product.save(productNew);
+		return res.json({ agregado: addProduct })
 		//return res.render("index",{ Agregado: productAdd });
-		return res.redirect("/productos");
+		// return res.redirect("/productos");
+
 	} catch (error) {
 		console.log(error);
 	}
@@ -89,18 +94,34 @@ router.get("/list", async (req, res) => {
 // });
 
 //actualiza producto(reemplaza)
-// c
+
+router.put("/:id", existProduct, noProductError, async (req, res) => {
+	try {
+		const { id } = req.params;
+		const newProduct = req.body;
+		console.log(newProduct)
+		const obj = {
+			...newProduct,
+			id: Number(id),
+		};
+		console.log(obj)
+		let productUpload = await product.update(obj);
+		res.json({ productUpload });
+	} catch (error) {
+		console.log(error);
+	}
+});
 
 //elimina producto
-// router.delete("/:id", existProduct, noProductError, async (req, res) => {
-// 	try {
-// 		const { id } = req.params;
-// 		let productDelete = await products.deleteById(Number(id));
-// 		return res.json({ productDelete });
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// });
+router.delete("/:id", existProduct, noProductError, async (req, res) => {
+	try {
+		const { id } = req.params;
+		let productDelete = await product.deleteById(Number(id));
+		return res.json({ Productos: productDelete });
+	} catch (error) {
+		console.log(error);
+	}
+});
 
 
 
