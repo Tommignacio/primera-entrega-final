@@ -1,36 +1,43 @@
 import container from "./container";
+import product from "./products";
 
 
-class Cartit extends container {
+
+class Cart extends container {
     constructor() {
         super(`${__dirname}/dataBase/cart.json`)
     }
 
     async createCart() {
         try {
-            //verifica si existe el archivo o lo tiene que crear
-            await this.createFile(this.pathBD);
+            // //verifica si existe el archivo o lo tiene que crear
+            // await this.createFile(this.pathBD);
             //lee el archivo
             let res = await this.read();
-            console.log(res)
             //crea nueva id
             const id = this.generateId(res);
+            const oldObj = { id: 1 }
+            const newObj = { ...oldObj, id: 2, nombre: "nuevo" }
+            console.log([oldObj, newObj])
             const cart = {
-                ...res,
                 id: id,
                 timeStamp: this.getNow(),
                 productos: []
             };
+            // console.log(res, "res")
+            // console.log(cart, "cart")
             res.push(cart)
+            // console.log(res, "resObj")
             this.write(JSON.stringify(res))
-            return cart
+            return res
         } catch (error) {
             console.log(error)
         }
     }
 
 
+
 }
 
-const cartse = new Cartit()
-module.exports = cartse
+const cart = new Cart()
+module.exports = cart

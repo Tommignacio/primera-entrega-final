@@ -4,7 +4,7 @@ import container from "./container"
 
 class Products extends container {
     constructor() {
-        super(`${__dirname}/dataBase/products.txt`)
+        super(`${__dirname}/dataBase/products.json`)
     }
 
     async save(obj) {
@@ -23,6 +23,7 @@ class Products extends container {
             //crea nueva id
             const id = this.generateId(res);
             console.log(id)
+            //al objeto ingresado(la copia) se le agrefa un nuevo id
             const product = {
                 ...obj,
                 id: id,
@@ -51,19 +52,21 @@ class Products extends container {
     }
 
 
-    //elimina objeto por su id
-    async deleteById(id) {
-        try {
-            let products = await this.read();;
-            //busca el indice del id del producto
-            const idProduct = products.findIndex((prod) => prod.id === id);
-            //elimina ese producto
-            products.splice(idProduct, 1);
-            return products;
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    // //elimina objeto por su id
+    // async deleteById(id) {
+    //     try {
+    //         let products = await this.read();
+    //         console.log(products)
+    //         //busca el indice del id del producto
+    //         const idProduct = products.findIndex((prod) => prod.id === id);
+    //         console.log(idProduct)
+    //         //elimina ese producto
+    //         products.splice(idProduct, 1);
+    //         return products;
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     //actualizar producto con uno nuevo
     async update(obj) {
@@ -78,21 +81,7 @@ class Products extends container {
         }
     }
 
-    //elimina objeto por su id
-    async deleteById(id) {
-        try {
-            let products = await this.read();
-            //busca el indice del id del producto
-            const idProduct = products.findIndex((prod) => prod.id === id);
-            //elimina ese producto
-            products.splice(idProduct, 1);
-            let productsUpdated = JSON.stringify(products)
-            await this.write(productsUpdated)
-            return products;
-        } catch (error) {
-            console.log(error);
-        }
-    }
+
 }
 
 const product = new Products()

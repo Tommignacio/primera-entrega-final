@@ -51,6 +51,15 @@ export default class Container {
 			console.log(error);
 		}
 	}
+	//devuelve tosdos los objetos
+	async getAll() {
+		try {
+			let all = await this.read();
+			return all;
+		} catch (error) {
+			return error;
+		}
+	}
 
 	//crear ID
 	generateId(obj) {
@@ -71,6 +80,22 @@ export default class Container {
 		}
 	}
 
+	//elimina objeto por su id
+	async deleteById(id) {
+		try {
+			let products = await this.read();
+			//busca el indice del id del producto
+			const idProduct = products.findIndex((prod) => prod.id == id);
+			//elimina ese producto
+			products.splice(idProduct, 1);
+			let productsUpdated = JSON.stringify(products)
+			//reescribe el json
+			await this.write(productsUpdated)
+			return products;
+		} catch (error) {
+			console.log(error);
+		}
+	}
 	//hora
 	getNow() {
 		try {
@@ -164,16 +189,7 @@ export default class Container {
 	// 	}
 	// }
 
-	//devuelve tosdos los objetos
-	// async getAll() {
-	// 	try {
-	// 		let all = await this.read();
 
-	// 		return all;
-	// 	} catch (error) {
-	// 		return error;
-	// 	}
-	// }
 
 
 	// async getAll() {
