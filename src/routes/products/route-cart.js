@@ -20,14 +20,34 @@ router.delete("/:id/productos", async (req, res) => {
     return res.json({ cartDelete })
 })
 
-router.get("/", async (req, res) => {
+//muestra lista de productos en un carrito
+router.get("/:id/productos", async (req, res) => {
     try {
-        const allCart = await cart.getAll()
-        return res.json(allCart)
+        const { id } = req.params
+        const allProducts = await cart.showProducts(id)
+        return res.json(allProducts)
     } catch (err) {
         console.log(err)
     }
 
 })
+
+//agrega producto por su id a un carrito
+router.post("/:id/productos", async (req, res) => {
+    const { id } = req.params
+    const idProducts = req.body
+    const cartAdd = await cart.addProducts(id, idProducts)
+
+})
+
+// router.get("/", async (req, res) => {
+//     try {
+//         const allCart = await cart.addProduct()
+//         return res.json(allCart)
+//     } catch (err) {
+//         console.log(err)
+//     }
+
+// })
 
 module.exports = router
