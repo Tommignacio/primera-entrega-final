@@ -39,6 +39,18 @@ const noProductError = async function (err, req, res, next) {
 	next();
 };
 
+const isAdmin = true
+
+function adminOrClient(req, res, next) {
+	if (!isAdmin) {
+		res.json({ error: -1, descripcion: `ruta '${req.originalUrl}' metodo '${req.method}' no autorizada ` })
+	} else {
+		next()
+	}
+}
+
+
+
 //pagina index
 router.get("/:id?", async (req, res) => {
 	try {
@@ -57,7 +69,7 @@ router.get("/:id?", async (req, res) => {
 
 
 //agrega producto
-router.post("/", async (req, res) => {
+router.post("/", adminOrClient, async (req, res) => {
 	try {
 		const productNew = req.body;
 		// const image = req.file;
@@ -94,8 +106,7 @@ router.post("/", async (req, res) => {
 // });
 
 //actualiza producto(reemplaza)
-
-router.put("/:id", existProduct, noProductError, async (req, res) => {
+router.put("/:id", adminOrClient, existProduct, noProductError, async (req, res) => {
 	try {
 		const { id } = req.params;
 		const newProduct = req.body;
@@ -113,7 +124,7 @@ router.put("/:id", existProduct, noProductError, async (req, res) => {
 });
 
 //elimina producto
-router.delete("/:id", existProduct, noProductError, async (req, res) => {
+router.delete("/:id", adminOrClient, existProduct, noProductError, async (req, res) => {
 	try {
 		const { id } = req.params;
 		let productDelete = await product.deleteById(Number(id));

@@ -27,6 +27,7 @@ class Products extends container {
             const product = {
                 ...obj,
                 id: id,
+                timeStamp: this.getNow(),
             };
             res.push(product);
             this.write(JSON.stringify(res));

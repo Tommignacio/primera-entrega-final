@@ -19,12 +19,22 @@ app.use(express.json());
 app.use(express.static(__dirname + "/public")); //dirname sirve para que si abro desde otro directoro, siempre encontrara la carpeta publica
 app.use(express.urlencoded({ extended: true })); //sirve para leer los datos enviados por html formulario
 
+//middleware error
+const ruteError = async function (req, res, next) {
+	console.log(req)
+	//mensaje de error al no existir la ruta
+	return res
+		.status(404)
+		.json({ error: -2, description: `route '${req.originalUrl}' method '${req.method}' not implemented` });
+};
+
 //config plantilla
 app.set("views", "public/views"); //nombre de la carpeta, ruta donde esta
 app.set("view engine", "ejs");
 
 //Rutas
 app.use("/", routes);
+app.use("/*", ruteError)
 
 //array de mensajes
 const messages = []

@@ -37,7 +37,14 @@ router.post("/:id/productos", async (req, res) => {
     const { id } = req.params
     const idProducts = req.body
     const cartAdd = await cart.addProducts(id, idProducts)
+    return res.json(cartAdd)
+})
 
+//elimina producto del carrito
+router.delete("/:id/productos/:id_prod", async (req, res) => {
+    const { id, id_prod } = req.params
+    const delProduct = await cart.deleteProduct(id, id_prod)
+    return res.json({ eliminado: delProduct })
 })
 
 // router.get("/", async (req, res) => {
